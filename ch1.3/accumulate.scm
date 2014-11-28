@@ -15,3 +15,10 @@
 (define (factorial n)
   (define (id n) n)
   (product id 1 1+ n))
+  
+(define (pi-approx n)
+  (define (fraction n)
+    (if (odd? n)
+        (/ (+ n 1) (+ n 2))
+        (/ (+ n 2) (+ n 1))))
+  (* 4 (product fraction 1 1+ n)))
