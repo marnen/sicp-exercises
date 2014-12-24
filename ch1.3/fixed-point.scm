@@ -1,17 +1,15 @@
-(define tolerance 0.00001)
+(load "iterative-improve")
 
 (define (fixed-point f first-guess)
   (define (close-enough? v1 v2)
-    (< (abs (- v1 v2))
-       tolerance))
-  (define (try guess)
-    (let ((next (f guess)))
-      (display guess)
-      (newline)
-      (if (close-enough? guess next)
-          next
-          (try next))))
-  (try first-guess))
+    (let ((tolerance 0.00001))
+      (< (abs (- v1 v2))
+         tolerance)))
+  ((iterative-improve
+     (lambda (guess)
+       (close-enough? guess (f guess)))
+     f)
+    first-guess))
 
 (define (deriv g)
   (let ((dx 0.00001))
