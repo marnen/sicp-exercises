@@ -23,3 +23,11 @@
   (display ",")
   (display (y-point p))
   (display ")"))
+  
+(define (midpoint-segment segment)
+  (define (average x y) (/ (+ x y) 2))
+  (let ((start (start-segment segment))
+        (end (end-segment segment)))
+    (make-point
+      (average (x-point start) (x-point end))
+      (average (y-point start) (y-point end)))))
