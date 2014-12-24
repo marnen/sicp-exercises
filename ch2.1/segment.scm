@@ -6,6 +6,13 @@
   
 (define (end-segment segment)
   (cdr segment))
+  
+(define (print-segment segment)
+  (display "[")
+  (print-point (start-segment segment))
+  (display ", ")
+  (print-point (end-segment segment))
+  (display "]"))
 
 (define (make-point x y)
   (cons x y))
@@ -17,10 +24,9 @@
   (cdr p))
 
 (define (print-point p)
-  (newline)
   (display "(")
   (display (x-point p))
-  (display ",")
+  (display ", ")
   (display (y-point p))
   (display ")"))
   
