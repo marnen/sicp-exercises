@@ -6,3 +6,13 @@
 
 (define (add-1 n)
   (lambda (f) (lambda (x) (f ((n f) x)))))
+
+; derive add-2
+
+(add-1 (add-1 n))
+
+(lambda (f)
+  (lambda (x)
+    (f (((lambda (f) (lambda (x) (f ((n f) x)))) f) x))))
+
+(lambda (f) (lambda (x) (f (f ((n f) x)))))
