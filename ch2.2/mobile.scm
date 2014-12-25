@@ -1,0 +1,17 @@
+(define (total-weight mobile)
+  (if (pair? mobile)
+    (+ (total-weight (left-branch mobile))
+       (total-weight (right-branch mobile)))
+    mobile))
+
+(define (balanced? mobile)
+  (define (torque branch)
+    (* (weight branch) (branch-length branch)))
+
+  (or (not (pair? mobile))
+      (let ((left (left-branch mobile))
+            (right (right-branch mobile)))
+        (and (= (torque left)
+                (torque right))
+             (balanced? (branch-structure left))
+             (balanced? (branch-structure right))))))
