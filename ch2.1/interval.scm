@@ -6,6 +6,19 @@
 (define (lower-bound interval)
   (car interval))
 
+(define (make-center-width c w)
+  (make-interval (- c w) (+ c w)))
+
+(define (center i)
+  (/ (+ (lower-bound i)
+        (upper-bound i))
+     2))
+
+(define (width i)
+  (/ (- (upper-bound i)
+        (lower-bound i))
+     2))
+
 (define (add-interval x y)
   (make-interval (+ (lower-bound x)
                     (lower-bound y))
