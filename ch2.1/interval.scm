@@ -9,6 +9,9 @@
 (define (make-center-width c w)
   (make-interval (- c w) (+ c w)))
 
+(define (make-center-percent center percent)
+  (make-center-width center (* center percent)))
+
 (define (center i)
   (/ (+ (lower-bound i)
         (upper-bound i))
@@ -18,6 +21,9 @@
   (/ (- (upper-bound i)
         (lower-bound i))
      2))
+
+(define (percent interval)
+  (/ (width interval) (center interval)))
 
 (define (add-interval x y)
   (make-interval (+ (lower-bound x)
