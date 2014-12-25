@@ -19,16 +19,72 @@
                  (- (upper-bound y)))))
 
 (define (mul-interval x y)
-  (let ((p1 (* (lower-bound x)
-               (lower-bound y)))
-        (p2 (* (lower-bound x)
-               (upper-bound y)))
-        (p3 (* (upper-bound x)
-               (lower-bound y)))
-        (p4 (* (upper-bound x)
-               (upper-bound y))))
-    (make-interval (min p1 p2 p3 p4)
-                   (max p1 p2 p3 p4))))
+  (define (sign-interval interval)
+    (cond ((not (negative? (lower-bound interval))) 1)
+          ((negative? (upper-bound interval)) -1)
+          (else 0)))
+
+  (let ((x1 (lower-bound x))
+        (x2 (upper-bound x))
+        (y1 (lower-bound y))
+        (y2 (upper-bound y))
+        (sign-x (sign-interval x))
+        (sign-y (sign-interval y)))
+
+             ; (+x1 +x2) * (+y1 +y2)
+             ; x1y1 < (x1y2, x2y1) < x2y2
+             ; (+x1 +x2) * (-y1 -y2)
+             ; x2y1 < (x1y1, x2y2) < x1y2
+             ; (+x1 +x2) * (-y1 +y2)
+             ; x2y1 < x1y1 < x1y2 < x2y2
+
+       (cond ((= sign-x 1)
+              (cond ((= sign-y 1)
+                     (make-interval
+                      (* x1 y1) (* x2 y2)))
+                    ((= sign-y -1)
+                     (make-interval
+                      (* x2 y1) (* x1 y2)))
+                    (else
+                     (make-interval
+                      (* x2 y1) (* x2 y2)))))
+
+             ; (-x1 -x2) * (+y1 +y2)
+             ; x1y2 < (x1y1, x2y2) < x2y1
+             ; (-x1 -x2) * (-y1 -y2)
+             ; x2y2 < (x1y2, x2y1) < x1y1
+             ; (-x1 -x2) * (-y1 +y2)
+             ; x1y2 < x2y2 < x2y1 < x1y1
+
+             ((= sign-x -1)
+              (cond ((= sign-y 1)
+                     (make-interval
+                      (* x1 y2) (* x2 y1)))
+                    ((= sign-y -1)
+                     (make-interval
+                      (* x2 y2) (* x1 y1)))
+                    (else
+                     (make-interval
+                      (* x1 y2) (x1 * y1)))))
+
+             ; (-x1 +x2) * (+y1 +y2)
+             ; x1y2 < x1y1 < x2y1 < x2y2
+             ; (-x1 +x2) * (-y1 -y2)
+             ; x2y1 < x2y2 < x1y2 < x1y1
+             ; (-x1 +x2) * (-y1 +y2)
+             ; (x1y2, x2y1) < (x1y1, x2y2)
+
+             (else
+              (cond ((= sign-y 1)
+                     (make-interval
+                      (* x1 y2) (* x2 y2)))
+                    ((= sign-y -1)
+                     (make-interval
+                      (* x2 y1) (* x1 y1)))
+                    (else
+                     (make-interval
+                      (min (* x1 y2) (* x2 y1))
+                      (max (* x1 y1) (* x2 y2)))))))))
 
 (define (div-interval x y)
   (define (sign n)
