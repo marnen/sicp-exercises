@@ -1,3 +1,12 @@
+(define (first-denomination items)
+  (car items))
+
+(define (except-first-denomination items)
+  (cdr items))
+
+(define (no-more? items)
+  (null? items))
+
 (define (cc amount coin-values)
   (cond ((= amount 0)
          1)
