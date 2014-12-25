@@ -31,13 +31,6 @@
         (sign-x (sign-interval x))
         (sign-y (sign-interval y)))
 
-             ; (+x1 +x2) * (+y1 +y2)
-             ; x1y1 < (x1y2, x2y1) < x2y2
-             ; (+x1 +x2) * (-y1 -y2)
-             ; x2y1 < (x1y1, x2y2) < x1y2
-             ; (+x1 +x2) * (-y1 +y2)
-             ; x2y1 < x1y1 < x1y2 < x2y2
-
        (cond ((= sign-x 1)
               (cond ((= sign-y 1)
                      (make-interval
@@ -48,14 +41,6 @@
                     (else
                      (make-interval
                       (* x2 y1) (* x2 y2)))))
-
-             ; (-x1 -x2) * (+y1 +y2)
-             ; x1y2 < (x1y1, x2y2) < x2y1
-             ; (-x1 -x2) * (-y1 -y2)
-             ; x2y2 < (x1y2, x2y1) < x1y1
-             ; (-x1 -x2) * (-y1 +y2)
-             ; x1y2 < x2y2 < x2y1 < x1y1
-
              ((= sign-x -1)
               (cond ((= sign-y 1)
                      (make-interval
@@ -66,14 +51,6 @@
                     (else
                      (make-interval
                       (* x1 y2) (x1 * y1)))))
-
-             ; (-x1 +x2) * (+y1 +y2)
-             ; x1y2 < x1y1 < x2y1 < x2y2
-             ; (-x1 +x2) * (-y1 -y2)
-             ; x2y1 < x2y2 < x1y2 < x1y1
-             ; (-x1 +x2) * (-y1 +y2)
-             ; (x1y2, x2y1) < (x1y1, x2y2)
-
              (else
               (cond ((= sign-y 1)
                      (make-interval
